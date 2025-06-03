@@ -12,8 +12,6 @@ const handleContactUs = async (req, res) => {
         res.status(201).json({ 
             success: true, 
             message: 'Message sent successfully!',
-            // Optionally include result details in the response
-            // For example, if you want to return the ID of the inserted row
             insertId: result.insertId 
         });
     } catch (error) {

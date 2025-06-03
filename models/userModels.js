@@ -1,10 +1,10 @@
 const { pool } = require('../Config/db');
 const bcrypt = require('bcryptjs');
-const { sendVerificationEmail } = require('../mailer');
-const jwt = require('jsonwebtoken');
+// const { sendVerificationEmail } = require('../mailer');
+// const jwt = require('jsonwebtoken');
 
 const salt = 10;
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Ensure you set a secret key in your .env file
+// const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'; // Ensure you set a secret key in your .env file
 
 // Register
 const Registeruser = async (name, mobile_number, email, password) => {

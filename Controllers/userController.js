@@ -16,21 +16,26 @@ const registeruser = async(req,res)=>{
         return res.status(500).json({error:error.message})
     }
 };
-const verifyUser = async (req, res) => {
-    const { email } = req.user;
 
-    const sql = 'UPDATE users SET is_verified = true WHERE email = ?';
-    pool.query(sql, [email], (err) => {
-        if (err) {
-            return res.status(500).json({ success: false, message: 'Internal server error' });
+const verifyUser =  (req, res) => {
+    try {
+        const authHeader = req.header('Authorization');
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ success: false, message: 'Authorization header missing or invalid' });
         }
 
-        return res.status(200).json({ success: true, message: 'Email verified successfully!' });
-    });
+        const token = authHeader.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        return res.status(200).json({ success: true, user: decoded });
+    } catch (error) {
+        console.error('Token verification failed:', error.message);
+        return res.status(403).json({ success: false, message: 'Invalid or expired token' });
+    }
 };
 
-
-
+module.exports = verifyUser;
 
 const loginuser = async(req,res)=>{
     const { email, password } = req.body;
@@ -50,8 +55,8 @@ const loginuser = async(req,res)=>{
             return res.status(400).json({ message: 'Invalid email or password' });
         }
 
-        // Generate JWT token
-        const token = jwt.sign({ userId: user.user_id }, JWT_SECRET, { expiresIn: '1h' });
+        // Generate JWT token           
+        const token = jwt.sign({ userId: user.user_id,email:user.email,name:user.name}, JWT_SECRET, { expiresIn: '2m' });
 
        return res.json({ success: true, token });
     } catch (error) {

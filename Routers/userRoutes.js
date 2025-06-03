@@ -4,13 +4,9 @@ const {registeruser,loginuser,getAllUsers,getUserById,updateUser,deleteuser,veri
 const {authenticateJWT} = require("../Middleware/authMiddleware");
 
 
-
-// Verify email
-
-
 router.post("/register", registeruser);
 router.post("/login", loginuser);
-router.get("/verify", authenticateJWT, verifyUser); // ✅ Token sent in header
+router.get("/verify", verifyUser); 
 router.get("/", authenticateJWT, getAllUsers);
 router.get("/:id", authenticateJWT, getUserById);
 router.put("/:id", authenticateJWT, updateUser);

@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const userRoutes = require('./Routers/userRoutes');
 const contactRoutes = require('./Routers/contactRoutes');
+const plantRoutes = require('./Routers/PlantsRoutes');
+const GtoolRoutes = require('./Routers/GToolRoutes');
 const { connectDb } = require('./Config/db');
 const cors = require('cors');
 
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 // Use the routes
 app.use('/users', userRoutes);  
 app.use('/users/api', contactRoutes); // Changed the path to '/contact' for clarity
+app.use('/product',plantRoutes);
+app.use('/tool',GtoolRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {
